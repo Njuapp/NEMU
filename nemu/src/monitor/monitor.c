@@ -57,7 +57,7 @@ static void init_ramdisk() {
 	ret = fread(hwa_to_va(0), file_size, 1, fp);
 	assert(ret == 1);
 	fclose(fp);
-	printf("INIT_RAMDISK SUCCESSFULLY!\n");
+	//printf("INIT_RAMDISK SUCCESSFULLY!\n");
 }
 #endif
 

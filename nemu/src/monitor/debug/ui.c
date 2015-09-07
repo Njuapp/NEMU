@@ -92,9 +92,7 @@ void ui_mainloop() {
 		if(args >= str_end) {
 			args = NULL;
 		}
-		printf("cmd=%s,while args=%s!\n",cmd,args);
 #ifdef HAS_DEVICE
-		printf("yes,a device!\n");
 		extern void sdl_clear_event_queue(void);
 		sdl_clear_event_queue();
 #endif
