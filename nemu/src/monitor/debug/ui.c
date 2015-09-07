@@ -2,6 +2,7 @@
 #include "monitor/expr.h"
 #include "monitor/watchpoint.h"
 #include "nemu.h"
+#include "cpu/reg.h"
 
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -37,10 +38,9 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_help(char *args);
-
 static int cmd_si(char *args);
-
 static int cmd_d(char *args);
+static int cmd_info(char * args);
 
 static struct {
 	char *name;
@@ -52,6 +52,7 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 	{ "d","Delete watch point",cmd_d},
 	{ "si","Debug by single step or any number of steps you want",cmd_si},
+	{ "info","info r :Print states of GPRs\ninfo w :Print states of watchpoints you set",cmd_info},
 	/* TODO: Add more commands */
 
 };
@@ -76,6 +77,18 @@ static int cmd_si(char *args){
 	for(i=0;steps[i]!='\0';i++)
 		n+=n*10+steps[i]-'0';
 	cpu_exec(n);
+	return 0;
+}
+
+static int cmd_info(char *args){
+	if(args==NULL){
+		printf("lack of parameter.\n");
+		return 0;
+	}
+	char* option=strtok(args," ");
+	if(strcmp(option,"r")==0){
+		printf("R_EAX=%08x",reg_l(0));
+	}
 	return 0;
 }
 static int cmd_d(char *args){
