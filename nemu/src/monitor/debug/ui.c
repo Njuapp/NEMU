@@ -38,6 +38,8 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args);
+
 static int cmd_d(char *args);
 
 static struct {
@@ -49,13 +51,22 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
 	{ "d","Delete watch point",cmd_d},
-
+	{ "si","Debug by single step",cmd_si},
 	/* TODO: Add more commands */
 
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
+static int cmd_si(char *args){
+	int n=0;
+	char* steps=strtok(args," ");
+	int i;
+	for(i=0;steps[i]!='\0';i++)
+		n+=n*10+steps[i]-'0';
+	cpu_exec(n);
+	return 0;
+}
 static int cmd_d(char *args){
 	printf("Successfully delete %s watchpoint!\n",args);	
 	return 0;
