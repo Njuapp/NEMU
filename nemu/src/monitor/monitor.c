@@ -85,7 +85,7 @@ void restart() {
 	/* Read the entry code into memory. */
 	load_entry();
 
-	/* Set the initial instruction pointer. */
+	//#### Set the initial instruction pointer at a fixed address---0x100000. 
 	cpu.eip = ENTRY_START;
 
 	/* Initialize DRAM. */
