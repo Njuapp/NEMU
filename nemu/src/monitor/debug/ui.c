@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
+#include <ctype.h>
 void cpu_exec(uint32_t);
 
 /* We use the ``readline'' library to provide more flexibility to read from stdin. */
@@ -65,6 +65,13 @@ static int cmd_si(char *args){
 	}
 	int n=0;
 	char* steps=strtok(args," ");
+	int k=0;
+	for(;steps[k]!='\0';k++){
+		if(!isdigit(steps[k])){
+			printf("parameter should be a number.\n");
+			return 0;
+		}
+	}	
 	int i;
 	for(i=0;steps[i]!='\0';i++)
 		n+=n*10+steps[i]-'0';
