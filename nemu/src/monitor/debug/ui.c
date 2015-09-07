@@ -28,7 +28,7 @@ char* rl_gets() {
 }
 
 static int cmd_c(char *args) {
-	cpu_exec(5);
+	cpu_exec(-1);
 	return 0;
 }
 
@@ -51,7 +51,7 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
 	{ "d","Delete watch point",cmd_d},
-	{ "si","Debug by single step",cmd_si},
+	{ "si","Debug by single step or any number of steps you want",cmd_si},
 	/* TODO: Add more commands */
 
 };
@@ -59,6 +59,10 @@ static struct {
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 
 static int cmd_si(char *args){
+	if(args==NULL){
+		cpu_exec(1);
+		return 0;
+	}
 	int n=0;
 	char* steps=strtok(args," ");
 	int i;
