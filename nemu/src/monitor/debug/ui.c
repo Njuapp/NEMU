@@ -56,8 +56,6 @@ static struct {
 	{ "d","Delete watch point",cmd_d},
 	{ "si","Debug by single step or any number of steps you want",cmd_si},
 	{ "info","info r :Print states of GPRs\ninfo w :Print states of watchpoints you set",cmd_info},
-	/* TODO: Add more commands */
-
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
