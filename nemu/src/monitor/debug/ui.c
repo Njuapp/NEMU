@@ -9,6 +9,9 @@
 #include <readline/history.h>
 #include <ctype.h>
 void cpu_exec(uint32_t);
+extern const char *regsl[];
+extern const char *regsw[];
+extern const char *regsb[];
 
 /* We use the ``readline'' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
@@ -87,7 +90,13 @@ static int cmd_info(char *args){
 	}
 	char* option=strtok(args," ");
 	if(strcmp(option,"r")==0){
-		printf("R_EAX=%08x",reg_l(0));
+		int i;
+		for(i=R_EAX;i<=R_EDI;i++)
+			printf("%s : %08x\n",regsl[i],reg_l(i));
+		for(i=R_AX;i<=R_EDI;i++)
+			printf("%s : %04x\n",regsw[i],reg_w(i));
+		for(i=R_AL;i<=R_BH;i++)
+			printf("%s : %02x\n",regsb[i],reg_b(i));
 	}
 	return 0;
 }
