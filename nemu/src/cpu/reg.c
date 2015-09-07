@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-CPU_state cpu;
+CPU_state cpu;//####This is the global definition of CPU_state-kind 'cpu' variance ,which has been declared 'extern' in reg.h.
 
 const char *regsl[] = {"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
 const char *regsw[] = {"ax", "cx", "dx", "bx", "sp", "bp", "si", "di"};

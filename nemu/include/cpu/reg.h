@@ -35,7 +35,7 @@ typedef union {
 	swaddr_t eip;
 	};
 
-} CPU_state;
+} CPU_state;//####This part defines a simulation of GPRs' group.####
 
 extern CPU_state cpu;
 
@@ -43,11 +43,11 @@ static inline int check_reg_index(int index) {
 	assert(index >= 0 && index < 8);
 	return index;
 }
-
+//####NOTE:Here defines the easy-access way of certain one register state
 #define reg_l(index) (cpu.gpr[check_reg_index(index)]._32)
 #define reg_w(index) (cpu.gpr[check_reg_index(index)]._16)
 #define reg_b(index) (cpu.gpr[check_reg_index(index) & 0x3]._8[index >> 2])
-
+//####NOTE:reg_b can only be used when 0<=index<4
 extern const char* regsl[];
 extern const char* regsw[];
 extern const char* regsb[];
