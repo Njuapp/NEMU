@@ -41,7 +41,7 @@ void cpu_exec(volatile uint32_t n) {
 		return;
 	}
 	nemu_state = RUNNING;
-
+	printf("cpu_exec %d",n);
 #ifdef DEBUG
 	volatile uint32_t n_temp = n;
 	printf("debugging...");
