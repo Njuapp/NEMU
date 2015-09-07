@@ -44,6 +44,7 @@ void cpu_exec(volatile uint32_t n) {
 
 #ifdef DEBUG
 	volatile uint32_t n_temp = n;
+	printf("debugging...");
 #endif
 
 	setjmp(jbuf);
