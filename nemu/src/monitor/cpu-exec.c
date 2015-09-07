@@ -41,17 +41,15 @@ void cpu_exec(volatile uint32_t n) {
 		return;
 	}
 	nemu_state = RUNNING;
-	printf("cpu_exec %d",n);
 #ifdef DEBUG
 	volatile uint32_t n_temp = n;
-	printf("debugging...");
 #endif
 
 	setjmp(jbuf);
 
 	for(; n > 0; n --) {
 #ifdef DEBUG
-		swaddr_t eip_temp = cpu.eip;
+		swaddr_t eip_temp = cpu.eip;//####Reading the address of present instruction into 'eip_temp'.
 		if((n & 0xffff) == 0) {
 			/* Output some dots while executing the program. */
 			fputc('.', stderr);
@@ -62,7 +60,7 @@ void cpu_exec(volatile uint32_t n) {
 		 * instruction decode, and the actual execution. */
 		int instr_len = exec(cpu.eip);
 
-		cpu.eip += instr_len;
+		cpu.eip += instr_len;//####EIP points to the next instruction's address.
 
 #ifdef DEBUG
 		print_bin_instr(eip_temp, instr_len);
