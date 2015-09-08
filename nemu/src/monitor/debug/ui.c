@@ -65,7 +65,7 @@ static int cmd_x(char *args){
 	int num;
 	char addr[15];
 	sscanf(args,"%d %s",&num,addr);
-	printf("scan memory length %d %s\n",num,addr);
+	printf("scan memory length %d,from%s.\n",num,addr);
 	return 0;
 }
 static int cmd_si(char *args){
