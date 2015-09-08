@@ -44,6 +44,7 @@ static int cmd_help(char *args);
 static int cmd_si(char *args);
 static int cmd_d(char *args);
 static int cmd_info(char * args);
+static int cmd_x(char * args);
 
 static struct {
 	char *name;
@@ -55,11 +56,18 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 	{ "d","Delete watch point",cmd_d},
 	{ "si","Debug by single step or any number of steps you want",cmd_si},
-	{ "info","info r :Print states of GPRs\ninfo w :Print states of watchpoints you set",cmd_info},
+	{ "info","info r :Print states of GPRs\n      info w :Print states of watchpoints you set",cmd_info},
+	{ "x","Scan the memory state",cmd_x},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
-
+static int cmd_x(char *args){
+	int num;
+	char addr[15];
+	sscanf(args,"%d %s",&num,addr);
+	printf("scan memory length %d %s\n",num,addr);
+	return 0;
+}
 static int cmd_si(char *args){
 	if(args==NULL){
 		cpu_exec(1);
