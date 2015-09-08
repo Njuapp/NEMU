@@ -99,6 +99,7 @@ static int cmd_info(char *args){
 	char* option=strtok(args," ");
 	if(strcmp(option,"r")==0){
 		int i;
+		printf("eip : %08x\n",cpu.eip);
 		for(i=R_EAX;i<=R_EDI;i++)
 			printf("%s : %08x\n",regsl[i],reg_l(i));
 		for(i=R_AX;i<=R_EDI;i++)
