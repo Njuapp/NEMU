@@ -65,11 +65,9 @@ static int cmd_x(char *args){
 	int num;
 	swaddr_t addr;
 	sscanf(args,"%d %x",&num,&addr);
-	printf("scan memory length %d,from %08x.\n",num,addr);
 	int i;
 	for(i=0;i<num;i++)
-		printf("%08x ",instr_fetch(addr+i*4,4));
-	printf("\n");
+		printf("%08x  :%08x \n",addr+i*4,instr_fetch(addr+i*4,4));
 	return 0;
 }
 static int cmd_si(char *args){
