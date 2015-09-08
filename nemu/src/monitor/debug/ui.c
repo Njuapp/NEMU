@@ -45,6 +45,7 @@ static int cmd_si(char *args);
 static int cmd_d(char *args);
 static int cmd_info(char * args);
 static int cmd_x(char * args);
+static int cmd_p(char *args);
 
 static struct {
 	char *name;
@@ -58,9 +59,14 @@ static struct {
 	{ "si","Debug by single step or any number of steps you want",cmd_si},
 	{ "info","info r :Print states of GPRs\n      info w :Print states of watchpoints you set",cmd_info},
 	{ "x","Scan the memory state",cmd_x},
+	{ "p","Evaluate the value of expression",cmd_p},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
+static int cmd_p(char *args){
+	printf("evaluating.. %s\n",args);
+	return 0;
+}
 static int cmd_x(char *args){
 	int num;
 	swaddr_t addr;
