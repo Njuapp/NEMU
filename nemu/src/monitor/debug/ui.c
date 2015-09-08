@@ -63,9 +63,9 @@ static struct {
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 static int cmd_x(char *args){
 	int num;
-	char addr[15];
-	sscanf(args,"%d %s",&num,addr);
-	printf("scan memory length %d,from%s.\n",num,addr);
+	swaddr_t addr;
+	sscanf(args,"%d %x",&num,&addr);
+	printf("scan memory length %d,from%x.\n",num,addr);
 	return 0;
 }
 static int cmd_si(char *args){
