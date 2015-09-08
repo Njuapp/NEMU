@@ -3,7 +3,7 @@
 #include "monitor/watchpoint.h"
 #include "nemu.h"
 #include "cpu/reg.h"
-
+#include "cpu/helper.h"
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -66,8 +66,8 @@ static int cmd_x(char *args){
 	swaddr_t addr;
 	sscanf(args,"%d %x",&num,&addr);
 	printf("scan memory length %d,from %08x.\n",num,addr);
-	swaddr_t *p=(swaddr_t*)addr;
-	printf("memory content is %08x\n",*p);
+	//swaddr_t *p=(swaddr_t*)addr;
+	printf("memory content is %02x\n",instr_fetch(addr,1));
 	return 0;
 }
 static int cmd_si(char *args){
