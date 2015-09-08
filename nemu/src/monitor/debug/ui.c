@@ -68,7 +68,7 @@ static int cmd_x(char *args){
 	printf("scan memory length %d,from %08x.\n",num,addr);
 	int i;
 	for(i=0;i<num;i++)
-		printf("%02x ",instr_fetch(addr+i,1));
+		printf("%08x ",instr_fetch(addr+i*4,4));
 	printf("\n");
 	return 0;
 }
