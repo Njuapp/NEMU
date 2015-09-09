@@ -83,7 +83,7 @@ static bool make_token(char *e) {
 									printf(" ''  is recognized\n");break;
 					case 257:
 									printf(" + is recognized\n");break; 
-					default: panic("please implement me");
+					default: panic("please implement certain type");
 				}
 
 				break;
