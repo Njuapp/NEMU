@@ -82,7 +82,7 @@ static bool make_token(char *e) {
 				 * types of tokens, some extra actions should be performed.
 				 */
 				if(rules[i].token_type==DEREF){
-					if(nr_token==0||tokens[nr_token-1].type==NUM){
+					if(tokens[nr_token-1].type==NUM){
 						position-=substr_len;continue;
 					}
 				}
