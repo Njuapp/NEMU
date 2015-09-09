@@ -93,8 +93,6 @@ static bool make_token(char *e) {
 					nr_token++;
 				}
 				switch(rules[i].token_type) {
-					case NOTYPE:
-									printf(" ''  is recognized\n");break;
 					case EQ:
 									printf(" == is recognized\n");break; 
 					case PLUS:
