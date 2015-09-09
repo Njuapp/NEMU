@@ -97,7 +97,7 @@ static bool make_token(char *e) {
 			return false;
 		}
 	}
-
+	printf("a regular expression!\n");
 	return true; 
 }
 
