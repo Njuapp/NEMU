@@ -77,9 +77,11 @@ static bool make_token(char *e) {
 				 * to record the token in the array ``tokens''. For certain 
 				 * types of tokens, some extra actions should be performed.
 				 */
-				tokens[nr_token].type=rules[i].token_type;
-				strncpy(tokens[nr_token].str,substr_start,substr_len);
-				tokens[nr_token].str[substr_len]='\0';
+				if(rules[i].token_type!=NOTYPE){
+					tokens[nr_token].type=rules[i].token_type;
+					strncpy(tokens[nr_token].str,substr_start,substr_len);
+					tokens[nr_token].str[substr_len]='\0';
+				}
 				switch(rules[i].token_type) {
 					case NOTYPE:
 									printf(" ''  is recognized\n");break;
