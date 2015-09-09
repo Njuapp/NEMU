@@ -27,7 +27,7 @@ static struct rule {
 	{"==", EQ},						// equal
 	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i",REG},
 	{"[0-9]+",NUM},
-	{"x",ADDR}
+	{"0x",ADDR}
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
