@@ -28,8 +28,8 @@ static struct rule {
 	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i",REG},
 	{"0x[0-9]+",ADDR},
 	{"[0-9]+",NUM},
-	{"\\{",L_PAR},
-	{"\\}",R_PAR},
+	{"\\(",L_PAR},
+	{"\\)",R_PAR},
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
