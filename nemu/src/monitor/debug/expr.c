@@ -77,7 +77,9 @@ static bool make_token(char *e) {
 				 * to record the token in the array ``tokens''. For certain 
 				 * types of tokens, some extra actions should be performed.
 				 */
-
+				tokens[nr_token].type=rules[i].token_type;
+				strncpy(tokens[nr_token].str,substr_start,substr_len);
+				tokens[nr_token].str[substr_len]='\0';
 				switch(rules[i].token_type) {
 					case NOTYPE:
 									printf(" ''  is recognized\n");break;
@@ -87,7 +89,9 @@ static bool make_token(char *e) {
 									printf(" '+' is recognized\n");break;
 					default: panic("please implement certain type");
 				}
-
+				nr_token++;
+				if(nr_token==32)
+					return false;
 				break;
 			}
 		}
@@ -106,6 +110,9 @@ uint32_t expr(char *e, bool *success) {
 		*success = false;
 		return 0;
 	}
+	int i;
+	for(i=0;i<nr_token;i++)
+		printf("|%s|!!\n",tokens[i].str);
 	printf("evaluating.. %s\n",e);
 	/* TODO: Insert codes to evaluate the expression. */
 	//panic("please implement me");
