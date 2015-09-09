@@ -26,8 +26,8 @@ static struct rule {
 	{"\\+|\\-|\\*|\\/", PLUS},					// plus
 	{"==", EQ},						// equal
 	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i",REG},
-	{"[0-9]+",NUM},
-	{"0x",ADDR}
+	{"0x",ADDR},
+	{"[0-9]+",NUM}
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
