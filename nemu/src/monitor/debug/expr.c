@@ -126,7 +126,7 @@ uint32_t expr(char *e, bool *success) {
 	if(tokens[i].type == '*' && (i == 0 || tokens[i - 1].type ==PLUS||tokens[i-1].type==EQ) ) {
 			tokens[i].type = DEREF;
 		}
-		printf("|%s|!!\n",tokens[i].str);
+		printf("|%s|%d!!\n",tokens[i].str,tokens[i].type);
 	}
 	printf("evaluating.. %s\n",e);
 	/* TODO: Insert codes to evaluate the expression. */
