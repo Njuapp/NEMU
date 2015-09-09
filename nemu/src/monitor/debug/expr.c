@@ -23,7 +23,6 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE},				// spaces
-	{"\\*",DEREF},
 	{"\\+|\\-|\\*|\\/", PLUS},					// plus
 	{"==", EQ},						// equal
 	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i",REG},
@@ -81,11 +80,6 @@ static bool make_token(char *e) {
 				 * to record the token in the array ``tokens''. For certain 
 				 * types of tokens, some extra actions should be performed.
 				 */
-				if(rules[i].token_type==DEREF){
-					if(tokens[nr_token-1].type==NUM){
-						position-=substr_len;continue;
-					}
-				}
 				if(rules[i].token_type!=NOTYPE){
 					tokens[nr_token].type=rules[i].token_type;
 					strncpy(tokens[nr_token].str,substr_start,substr_len);
@@ -128,8 +122,12 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 	int i;
-	for(i=0;i<nr_token;i++)
+	for(i = 0; i < nr_token; i ++) {
+	if(tokens[i].type == '*' && (i == 0 || tokens[i - 1].type ==PLUS||tokens[i-1].type==EQ) ) {
+			tokens[i].type = DEREF;
+		}
 		printf("|%s|!!\n",tokens[i].str);
+	}
 	printf("evaluating.. %s\n",e);
 	/* TODO: Insert codes to evaluate the expression. */
 	//panic("please implement me");
