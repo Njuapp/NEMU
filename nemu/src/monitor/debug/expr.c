@@ -104,6 +104,8 @@ static bool make_token(char *e) {
 									printf(" NUM is recognized\n");break;
 					case ADDR:
 									printf(" ADDR is recognized\n");break;
+					case DEREF:
+									printf("DEREF is recognized\n");break;
 					default:break;
 				}
 				if(nr_token==32)
