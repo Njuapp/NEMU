@@ -79,10 +79,10 @@ static bool make_token(char *e) {
 				 */
 
 				switch(rules[i].token_type) {
-					case 256:
+					case NOTYPE:
 									printf(" ''  is recognized\n");break;
-					case 257:
-									printf(" + is recognized\n");break; 
+					case EQ:
+									printf(" == is recognized\n");break; 
 					default: panic("please implement certain type");
 				}
 
