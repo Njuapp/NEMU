@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256,PLUS,EQ
+	NOTYPE = 256,PLUS,EQ,REG
 
 	/* TODO: Add more token types */
 
@@ -24,7 +24,8 @@ static struct rule {
 
 	{" +",	NOTYPE},				// spaces
 	{"\\+", PLUS},					// plus
-	{"==", EQ}						// equal
+	{"==", EQ},						// equal
+	{"\\$e[a-d]x|\\$e[sb]p|\\$e[sd]i",REG}
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -90,7 +91,9 @@ static bool make_token(char *e) {
 									printf(" == is recognized\n");break; 
 					case PLUS:
 									printf(" '+' is recognized\n");break;
-					default: panic("please implement certain type");
+					case REG:
+									printf(" REG is recognized\n");break;
+					default:break;
 				}
 				if(nr_token==32)
 					return false;
