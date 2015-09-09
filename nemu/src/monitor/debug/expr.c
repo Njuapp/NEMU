@@ -23,7 +23,7 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE},				// spaces
-	{"*",DEREF},
+	{"\\*",DEREF},
 	{"\\+|\\-|\\*|\\/", PLUS},					// plus
 	{"==", EQ},						// equal
 	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i",REG},
