@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ
+	NOTYPE = 256,PLUS,EQ
 
 	/* TODO: Add more token types */
 
@@ -23,7 +23,7 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE},				// spaces
-	{"\\+", '+'},					// plus
+	{"\\+", PLUS},					// plus
 	{"==", EQ}						// equal
 };
 
@@ -71,7 +71,7 @@ static bool make_token(char *e) {
 				int substr_len = pmatch.rm_eo;
 
 				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
-				position += substr_len;
+				position += substr_len;//####Changing the direction of PRESENT-POSITION
 
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
 				 * to record the token in the array ``tokens''. For certain 
@@ -83,6 +83,8 @@ static bool make_token(char *e) {
 									printf(" ''  is recognized\n");break;
 					case EQ:
 									printf(" == is recognized\n");break; 
+					case PLUS:
+									printf(" '+' is recognized\n");break;
 					default: panic("please implement certain type");
 				}
 
