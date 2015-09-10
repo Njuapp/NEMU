@@ -65,16 +65,18 @@ static struct {
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 static int cmd_p(char *args){
 	bool evalexp=true;
-	expr(args,&evalexp);
+	printf("evaluating....%08x\n",expr(args,&evalexp));
 	return 0;
 }
 static int cmd_x(char *args){
 	int num;
-	swaddr_t addr;
-	sscanf(args,"%d %x",&num,&addr);
+	char exp[41];
+	sscanf(args,"%d %s",&num,exp);
+	bool evalexp=true;
+	uint32_t result=expr(exp,&evalexp);
 	int i;
 	for(i=0;i<num;i++)
-		printf("%08x  :%08x \n",addr+i*4,instr_fetch(addr+i*4,4));
+		printf("%08x  :%08x \n",result+i*4,instr_fetch(result+i*4,4));
 	return 0;
 }
 static int cmd_si(char *args){

@@ -221,9 +221,7 @@ uint32_t expr(char *e, bool *success) {
 		}
 		printf("|%s|%d!!\n",tokens[i].str,tokens[i].type);
 	}
-	printf("evaluating.. %s\n",e);
-	printf("%08x..\n",eval(0,nr_token-1));
 	/* TODO: Insert codes to evaluate the expression. ####257:DEREF,PLUS,EQ,REG,NUM,ADDR,L_PAR,R_PAR*/
-	return 0;
+	return eval(0,nr_token-1);
 }
 
