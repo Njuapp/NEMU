@@ -5,9 +5,8 @@
  */
 #include <sys/types.h>
 #include <regex.h>
-
 enum {
-	NOTYPE = 256,DEREF,PLUS,EQ,REG,NUM,ADDR,L_PAR,R_PAR
+	NOTYPE = 256,DEREF,MULTP,PLUS,EQ,REG,NUM,ADDR,L_PAR,R_PAR
 
 	/* TODO: Add more token types */
 
@@ -23,7 +22,8 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE},				// spaces
-	{"\\+|\\-|\\*|\\/", PLUS},					// plus
+	{"\\+|\\-", PLUS},				//+,-
+	{"\\*|\\/",MULTP},					// *,/
 	{"==", EQ},						// equal
 	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i",REG},
 	{"0x[0-9]+",ADDR},
@@ -117,7 +117,94 @@ static bool make_token(char *e) {
 	printf("a regular expression!\n");
 	return true; 
 }
-
+static bool checkpar(int p,int q){
+	if(tokens[p].type==L_PAR&&tokens[q].type==R_PAR)
+		return true;
+	else 
+		return false;
+}
+static uint32_t eval(int p,int q){
+	if(p==q){
+		uint32_t ret;
+		if(tokens[p].type==ADDR){
+			sscanf(tokens[p].str,"%x",&ret);
+			return ret;
+		}
+		else if(tokens[p].type==REG){
+			int j;
+			for(j=0;j<9;j++){
+				if(strcmp(tokens[p].str+1,regsl[j])==0){
+					ret=reg_l(j);
+					return ret;
+				}
+			}
+			for(j=0;j<8;j++){
+				if(strcmp(tokens[p].str+1,regsw[j])==0){
+					ret=reg_w(j);
+					return ret;
+				}
+			}
+			for(j=0;j<8;j++){
+				if(strcmp(tokens[p].str+1,regsb[j])==0){
+					ret=reg_b(j);
+					return ret;
+				}
+			}
+			return -1;
+		}
+		else if(tokens[p].type==NUM){
+			sscanf(tokens[p].str,"%d",&ret);
+			return ret;
+		}
+		else 
+			return -1;
+		//TODO:Determines the value of an exact position in tokens[] by its content.
+	}
+	else if(checkpar(p,q)==true){
+		return eval(p+1,q-1);
+	}
+	else if(checkpar(p,q)==false){
+		//TODO:Find the exact position of dominant op.
+		int k=p;
+		int op=p;
+		bool inpar=false;
+		for(;k<=q;k++){
+			if(!inpar&&tokens[k].type==L_PAR)
+				inpar=true;
+			else if(inpar&&tokens[k].type==R_PAR){
+				inpar=false;
+				continue;
+			}
+			if(inpar)
+				continue;
+			if(tokens[k].type<tokens[op].type)
+				op=k;
+		}
+		if(tokens[op].type!=DEREF){
+			uint32_t sub1=eval(p,op-1);
+			uint32_t sub2=eval(op+1,q);
+		//TODO:Depending on op,calculate by sub1 and sub2.
+			if(strcmp(tokens[op].str,"+")==0)
+				return sub1+sub2;
+			else if(strcmp(tokens[op].str,"-")==0)
+				return sub1-sub2;
+			else if(strcmp(tokens[op].str,"*")==0)
+				return sub1*sub2;
+			else if(strcmp(tokens[op].str,"/")==0)
+				return sub1/sub2;
+			else 
+				return -1;
+		}
+		else if(tokens[op].type==DEREF){
+			uint32_t address=eval(p+1,q);
+			return swaddr_read(address,4);
+		}
+		else 
+			return -1;
+	}
+	else 
+		return -1;
+}
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
@@ -131,8 +218,8 @@ uint32_t expr(char *e, bool *success) {
 		printf("|%s|%d!!\n",tokens[i].str,tokens[i].type);
 	}
 	printf("evaluating.. %s\n",e);
-	/* TODO: Insert codes to evaluate the expression. */
-	//panic("please implement me");
+	printf("%08x..\n",eval(0,nr_token-1));
+	/* TODO: Insert codes to evaluate the expression. ####257:DEREF,PLUS,EQ,REG,NUM,ADDR,L_PAR,R_PAR*/
 	return 0;
 }
 
