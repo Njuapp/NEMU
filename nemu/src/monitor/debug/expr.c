@@ -25,7 +25,7 @@ static struct rule {
 	{"\\+|\\-", PLUS},				//+,-
 	{"\\*|\\/",MULTP},					// *,/
 	{"==", EQ},						// equal
-	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i",REG},
+	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i|\\$[a-d]x|\\$[sb]p|\\$[sd]i|\\$[a-d]l|\\$[a-d]h",REG},
 	{"0x[0-9]+",ADDR},
 	{"[0-9]+",NUM},
 	{"\\(",L_PAR},
@@ -131,8 +131,12 @@ static uint32_t eval(int p,int q){
 			return ret;
 		}
 		else if(tokens[p].type==REG){
+			if(strcmp(tokens[p].str+1,"eip")==0){
+				ret=cpu.eip;
+				return ret;
+			}
 			int j;
-			for(j=0;j<9;j++){
+			for(j=0;j<8;j++){
 				if(strcmp(tokens[p].str+1,regsl[j])==0){
 					ret=reg_l(j);
 					return ret;
