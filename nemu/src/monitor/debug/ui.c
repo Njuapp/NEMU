@@ -65,7 +65,11 @@ static struct {
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 static int cmd_p(char *args){
 	bool evalexp=true;
-	printf("evaluating....%08x\n",expr(args,&evalexp));
+	uint32_t result=expr(args,&evalexp);
+	if(evalexp)
+		printf("evaluating....%08x\n",result);
+	else 
+		printf("INVALID EXPRESSION\n");
 	return 0;
 }
 static int cmd_x(char *args){
@@ -74,10 +78,16 @@ static int cmd_x(char *args){
 	sscanf(args,"%d %s",&num,exp);
 	bool evalexp=true;
 	uint32_t result=expr(exp,&evalexp);
+	if(evalexp){
 	int i;
 	for(i=0;i<num;i++)
 		printf("%08x  :%08x \n",result+i*4,instr_fetch(result+i*4,4));
 	return 0;
+	}
+	else{
+		printf("INVALID EXPRESSION\n");
+		return 0;
+	}
 }
 static int cmd_si(char *args){
 	if(args==NULL){
