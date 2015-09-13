@@ -22,7 +22,7 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE},				// spaces
-	{"\\||",OR},
+	{"\x7c\x7c",OR},
 	{"\\&&",AND},
 	{"==|!=", EQ},	
 	{"\\+|\\-", PLUS},				//+,-
