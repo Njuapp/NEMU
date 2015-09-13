@@ -248,7 +248,7 @@ uint32_t expr(char *e, bool *success) {
 	}
 	int i;
 	for(i = 0; i < nr_token; i ++) {
-	if(strcmp(tokens[i].str,"*") == 0 && (i == 0 || tokens[i - 1].type ==PLUS||tokens[i-1].type==EQ) ) {
+	if(strcmp(tokens[i].str,"*") == 0 && (i == 0 || !(tokens[i-1].type==NUM||tokens[i-1].type==REG||tokens[i-1].type==ADDR) )) {
 			tokens[i].type = DEREF;
 		}
 	}
