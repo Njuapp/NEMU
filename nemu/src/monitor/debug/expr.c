@@ -27,6 +27,7 @@ static struct rule {
 	{"==|!=", EQ},	
 	{"\\+|\\-", PLUS},				//+,-
 	{"\\*|\\/",MULTP},					// *,/
+	{"!",DEREF},
 	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i|\\$[a-d]x|\\$[sb]p|\\$[sd]i|\\$[a-d]l|\\$[a-d]h",REG},
 	{"0x[0-9]+",ADDR},
 	{"[0-9]+",NUM},
@@ -179,9 +180,16 @@ static uint32_t eval(int p,int q){
 			if(tokens[k].type<tokens[op].type)
 				op=k;
 		}
-		if(tokens[op].type==DEREF){
+		if(tokens[op].type==DEREF&&strcmp(tokens[op].str,"*")==0){
 			uint32_t address=eval(p+1,q);
 			return swaddr_read(address,4);
+		}
+		else if(tokens[op].type==DEREF&&strcmp(tokens[op].str,"!")==0){
+			uint32_t result=eval(p+1,q);
+			if(result==0)
+				return 1;
+			else 
+				return 0;
 		}
 		else if(tokens[op].type==OR){
 			uint32_t sub1=eval(p,op-1);
