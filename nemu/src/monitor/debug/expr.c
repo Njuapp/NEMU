@@ -29,7 +29,7 @@ static struct rule {
 	{"\\*|\\/",MULTP},					// *,/
 	{"!",DEREF},
 	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i|\\$[a-d]x|\\$[sb]p|\\$[sd]i|\\$[a-d]l|\\$[a-d]h",REG},
-	{"0x[0-9]+",ADDR},
+	{"0x[0-9a-f]+",ADDR},
 	{"[0-9]+",NUM},
 	{"\\(",L_PAR},
 	{"\\)",R_PAR},
