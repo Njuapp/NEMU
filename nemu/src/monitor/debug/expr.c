@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <regex.h>
 enum {
-	NOTYPE = 256,DEREF,MULTP,PLUS,EQ,REG,NUM,ADDR,L_PAR,R_PAR
+	NOTYPE = 256,OR,AND,EQ,PLUS,MULTP,DEREF,REG,NUM,ADDR,L_PAR,R_PAR
 
 	/* TODO: Add more token types */
 
@@ -22,9 +22,11 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE},				// spaces
+	{"\\||",OR},
+	{"\\&&",AND},
+	{"==|!=", EQ},	
 	{"\\+|\\-", PLUS},				//+,-
 	{"\\*|\\/",MULTP},					// *,/
-	{"==", EQ},						// equal
 	{"\\$e[a-d]x|\\$e[sbi]p|\\$e[sd]i|\\$[a-d]x|\\$[sb]p|\\$[sd]i|\\$[a-d]l|\\$[a-d]h",REG},
 	{"0x[0-9]+",ADDR},
 	{"[0-9]+",NUM},
@@ -87,21 +89,6 @@ static bool make_token(char *e) {
 					strncpy(tokens[nr_token].str,substr_start,substr_len);
 					tokens[nr_token].str[substr_len]='\0';
 					nr_token++;
-				}
-				switch(rules[i].token_type) {
-					case EQ:
-									printf(" == is recognized\n");break; 
-					case PLUS:
-									printf(" '+' is recognized\n");break;
-					case REG:
-									printf(" REG is recognized\n");break;
-					case NUM:
-									printf(" NUM is recognized\n");break;
-					case ADDR:
-									printf(" ADDR is recognized\n");break;
-					case DEREF:
-									printf("DEREF is recognized\n");break;
-					default:break;
 				}
 				if(nr_token==32)
 					return false;
@@ -192,7 +179,11 @@ static uint32_t eval(int p,int q){
 			if(tokens[k].type<tokens[op].type)
 				op=k;
 		}
-		if(tokens[op].type!=DEREF){
+		if(tokens[op].type==DEREF){
+			uint32_t address=eval(p+1,q);
+			return swaddr_read(address,4);
+		}
+		else if(tokens[op].type!=DEREF){
 			uint32_t sub1=eval(p,op-1);
 			uint32_t sub2=eval(op+1,q);
 		//TODO:Depending on op,calculate by sub1 and sub2.
@@ -209,15 +200,11 @@ static uint32_t eval(int p,int q){
 				return -1;
 			}
 		}
-		else{
-			uint32_t address=eval(p+1,q);
-			return swaddr_read(address,4);
-		}
+		
 	}
-	else {
-		eval_flag=false;
-		return -1;
-	}
+	eval_flag=false;
+	return -1;
+	
 }
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {

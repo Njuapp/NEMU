@@ -67,7 +67,7 @@ static int cmd_p(char *args){
 	eval_flag=true;
 	uint32_t result=expr(args,&eval_flag);
 	if(eval_flag)
-		printf("evaluating....%08x\n",result);
+		printf("evaluating....0x%08x\n",result);
 	else 
 		printf("INVALID EXPRESSION\n");
 	return 0;
