@@ -183,7 +183,33 @@ static uint32_t eval(int p,int q){
 			uint32_t address=eval(p+1,q);
 			return swaddr_read(address,4);
 		}
-		else if(tokens[op].type!=DEREF){
+		else if(tokens[op].type==OR){
+			uint32_t sub1=eval(p,op-1);
+			uint32_t sub2=eval(op+1,q);
+			if(sub1==0&&sub2==0)
+				return 0;
+			else
+				return 1; 
+		}
+		else if(tokens[op].type==AND){
+			uint32_t sub1=eval(p,op-1);
+			uint32_t sub2=eval(op+1,q);
+			if(sub1!=0&&sub2!=0)
+				return 1;
+			else
+				return 0;
+		}
+		else if(tokens[op].type==EQ){
+			uint32_t sub1=eval(p,op-1);
+			uint32_t sub2=eval(op+1,q);
+			if(strcmp(tokens[op].str,"!=")==0&&sub1!=sub2)
+				return 1;
+			else if(strcmp(tokens[op].str,"==")==0&&sub1==sub2)
+				return 1;
+			else
+				return 0;
+		}		
+		else {
 			uint32_t sub1=eval(p,op-1);
 			uint32_t sub2=eval(op+1,q);
 		//TODO:Depending on op,calculate by sub1 and sub2.
@@ -217,7 +243,6 @@ uint32_t expr(char *e, bool *success) {
 	if(strcmp(tokens[i].str,"*") == 0 && (i == 0 || tokens[i - 1].type ==PLUS||tokens[i-1].type==EQ) ) {
 			tokens[i].type = DEREF;
 		}
-		printf("|%s|%d!!\n",tokens[i].str,tokens[i].type);
 	}
 	/* TODO: Insert codes to evaluate the expression. ####257:DEREF,PLUS,EQ,REG,NUM,ADDR,L_PAR,R_PAR*/
 	return eval(0,nr_token-1);
