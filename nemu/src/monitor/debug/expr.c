@@ -123,7 +123,12 @@ static bool checkpar(int p,int q){
 	else 
 		return false;
 }
+bool eval_flag=true;
 static uint32_t eval(int p,int q){
+	if(p>q){
+		eval_flag=false;
+		return -1;
+	}
 	if(p==q){
 		uint32_t ret;
 		if(tokens[p].type==ADDR){
@@ -154,14 +159,17 @@ static uint32_t eval(int p,int q){
 					return ret;
 				}
 			}
-			return -1;
+			eval_flag=false;
+			return -1;//####Unnecessary exception handler
 		}
 		else if(tokens[p].type==NUM){
 			sscanf(tokens[p].str,"%d",&ret);
 			return ret;
 		}
-		else 
+		else {
+			eval_flag=false;
 			return -1;
+		}
 		//TODO:Determines the value of an exact position in tokens[] by its content.
 	}
 	else if(checkpar(p,q)==true){
@@ -196,23 +204,26 @@ static uint32_t eval(int p,int q){
 				return sub1*sub2;
 			else if(strcmp(tokens[op].str,"/")==0)
 				return sub1/sub2;
-			else 
+			else {
+				eval_flag=false;
 				return -1;
+			}
 		}
-		else if(tokens[op].type==DEREF){
+		else{
 			uint32_t address=eval(p+1,q);
 			return swaddr_read(address,4);
 		}
-		else 
-			return -1;
 	}
-	else 
+	else {
+		eval_flag=false;
 		return -1;
+	}
 }
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
-		return 0;
+		eval_flag=false;
+		return -1;
 	}
 	int i;
 	for(i = 0; i < nr_token; i ++) {

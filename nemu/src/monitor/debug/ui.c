@@ -61,12 +61,12 @@ static struct {
 	{ "x","Scan the memory state",cmd_x},
 	{ "p","Evaluate the value of expression",cmd_p},
 };
-
+extern bool eval_flag;
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 static int cmd_p(char *args){
-	bool evalexp=true;
-	uint32_t result=expr(args,&evalexp);
-	if(evalexp)
+	eval_flag=true;
+	uint32_t result=expr(args,&eval_flag);
+	if(eval_flag)
 		printf("evaluating....%08x\n",result);
 	else 
 		printf("INVALID EXPRESSION\n");
