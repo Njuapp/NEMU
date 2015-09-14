@@ -254,6 +254,7 @@ static uint32_t eval(int p,int q){
 	return -1;
 	
 }
+//OR,AND,EQ,PLUS,MULTP,DEREF,REG,NUM,ADDR,L_PAR,R_PAR
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
@@ -262,7 +263,7 @@ uint32_t expr(char *e, bool *success) {
 	}
 	int i;
 	for(i = 0; i < nr_token; i ++) {
-	if(strcmp(tokens[i].str,"*") == 0 && (i == 0 || !(tokens[i-1].type==NUM||tokens[i-1].type==REG||tokens[i-1].type==ADDR) )) {
+	if(strcmp(tokens[i].str,"*") == 0 && (i == 0 || !(tokens[i-1].type==R_PAR||tokens[i-1].type==NUM||tokens[i-1].type==REG||tokens[i-1].type==ADDR) )) {
 			tokens[i].type = DEREF;
 		}
 	}
