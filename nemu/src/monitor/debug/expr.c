@@ -191,7 +191,7 @@ static uint32_t eval(int p,int q){
 			}
 			if(inpar)
 				continue;
-			if(tokens[k].type<tokens[op].type)
+			if(tokens[k].type<=tokens[op].type)
 				op=k;
 		}
 		if(tokens[op].type==DEREF&&strcmp(tokens[op].str,"*")==0){
