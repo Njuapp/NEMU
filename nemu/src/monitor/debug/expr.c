@@ -105,13 +105,27 @@ static bool make_token(char *e) {
 	printf("a regular expression!\n");
 	return true; 
 }
-static bool checkpar(int p,int q){
-	if(tokens[p].type==L_PAR&&tokens[q].type==R_PAR)
-		return true;
-	else 
-		return false;
-}
 bool eval_flag=true;
+static bool checkpar(int p,int q){
+	if(!(tokens[p].type==L_PAR&&tokens[q].type==R_PAR))
+		return false;
+	int k=p+1;
+	int leftpar=0;
+	for(;k<q;k++){
+		if(tokens[k].type==L_PAR)
+			leftpar++;
+		else if(tokens[k].type==R_PAR)
+			leftpar--;
+		if(leftpar<0)
+			return false;
+	}
+	if(leftpar==0)
+		return true;
+	else{
+		eval_flag=false;
+		return false;
+	}
+}
 static uint32_t eval(int p,int q){
 	if(p>q){
 		eval_flag=false;
