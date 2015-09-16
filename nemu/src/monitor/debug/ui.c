@@ -46,7 +46,8 @@ static int cmd_d(char *args);
 static int cmd_info(char * args);
 static int cmd_x(char * args);
 static int cmd_p(char *args);
-
+static int cmd_w(char *args);
+static int cmd_d(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -60,9 +61,19 @@ static struct {
 	{ "info","info r :Print states of GPRs\n      info w :Print states of watchpoints you set",cmd_info},
 	{ "x","Scan the memory state",cmd_x},
 	{ "p","Evaluate the value of expression",cmd_p},
+	{ "w","Set watchpoints",cmd_w},
+	{ "d","Delete watchpoints",cmd_d},
 };
 extern bool eval_flag;
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
+static int cmd_w(char *args){
+	add_wp(args);
+	return 0;
+}
+static int cmd_d(char *args){
+	delete_wp(args);
+	return 0;
+}
 static int cmd_p(char *args){
 	eval_flag=true;
 	uint32_t result=expr(args,&eval_flag);
@@ -76,9 +87,9 @@ static int cmd_x(char *args){
 	int num;
 	char exp[41];
 	sscanf(args,"%d %s",&num,exp);
-	bool evalexp=true;
-	uint32_t result=expr(exp,&evalexp);
-	if(evalexp){
+	eval_flag=true;
+	uint32_t result=expr(exp,&eval_flag);
+	if(eval_flag){
 	int i;
 	for(i=0;i<num;i++)
 		printf("%08x  :%08x \n",result+i*4,instr_fetch(result+i*4,4));
@@ -126,10 +137,9 @@ static int cmd_info(char *args){
 		for(i=R_AL;i<=R_BH;i++)
 			printf("%s : %02x\n",regsb[i],reg_b(i));
 	}
-	return 0;
-}
-static int cmd_d(char *args){
-	printf("Successfully delete %s watchpoint!\n",args);	
+	else if(strcmp(option,"w")==0){
+		print_wp();
+	}
 	return 0;
 }
 static int cmd_help(char *args) {
