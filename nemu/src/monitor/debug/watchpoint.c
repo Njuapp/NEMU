@@ -68,7 +68,7 @@ void delete_wp(char *args){
 void print_wp(){
 	WP* wp_head=head;
 	for(;wp_head!=NULL;wp_head=wp_head->next){
-		printf("NO.%d watchpoint\n:%s==%08x\n",wp_head->NO,wp_head->expr,wp_head->expr_value);
+		printf("NO.%d watchpoint:\nexpression:%s    value:%08x\n",wp_head->NO,wp_head->expr,wp_head->expr_value);
 	}
 }
 bool check_wp(){
@@ -78,7 +78,7 @@ bool check_wp(){
 		eval_flag=true;
 		uint32_t uptodate=expr(wp->expr,&eval_flag);
 		if(uptodate!=wp->expr_value){
-			printf("NO.%d watchpoint changed:\n%s  %08x->%08x\n",wp->NO,wp->expr,wp->expr_value,uptodate);
+			printf("NO.%d watchpoint changed:\nexpression:%s    value:%08x->%08x\n",wp->NO,wp->expr,wp->expr_value,uptodate);
 			wp->expr_value=uptodate;
 			unchanged=false;
 		}
