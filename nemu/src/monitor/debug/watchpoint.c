@@ -71,6 +71,21 @@ void print_wp(){
 		printf("NO.%d watchpoint\n:%s==%08x\n",wp_head->NO,wp_head->expr,wp_head->expr_value);
 	}
 }
+bool check_wp(){
+	WP* wp=head;
+	bool unchanged=true;
+	for(;wp!=NULL;wp=wp->next){
+		eval_flag=true;
+		uint32_t uptodate=expr(wp->expr,&eval_flag);
+		if(uptodate!=wp->expr_value){
+			printf("NO.%d watchpoint changed:\n%s  %08x->%08x\n",wp->NO,wp->expr,wp->expr_value,uptodate);
+			wp->expr_value=uptodate;
+			unchanged=false;
+		}
+	}
+	return unchanged;
+}
+
 /* TODO: Implement the functionality of watchpoint */
 
 
