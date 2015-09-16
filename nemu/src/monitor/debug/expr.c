@@ -182,16 +182,20 @@ static uint32_t eval(int p,int q){
 		//TODO:Find the exact position of dominant op.
 		int k=p;
 		int op=p;
-		bool inpar=false;
+		int leftpar=0;
 		for(;k<=q;k++){
-			if(!inpar&&tokens[k].type==L_PAR)
-				inpar=true;
-			else if(inpar&&tokens[k].type==R_PAR){
-				inpar=false;
+			if(tokens[k].type==L_PAR){
+				leftpar++;
 				continue;
 			}
-			if(inpar)
+			else if(tokens[k].type==R_PAR){
+				leftpar--;
 				continue;
+			}
+			if(leftpar>0)
+				continue;
+			if(leftpar<0)
+				panic("brackets unmatched.\n");
 			if(tokens[k].type<=tokens[op].type)
 				op=k;
 		}
