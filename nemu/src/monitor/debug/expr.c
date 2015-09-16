@@ -78,7 +78,7 @@ static bool make_token(char *e) {
 				char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
 
-				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+			//	Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;//####Changing the direction of PRESENT-POSITION
 
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -102,7 +102,7 @@ static bool make_token(char *e) {
 			return false;
 		}
 	}
-	printf("a regular expression!\n");
+	//printf("a regular expression!\n");
 	return true; 
 }
 bool eval_flag=true;
