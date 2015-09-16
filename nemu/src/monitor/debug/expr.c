@@ -122,6 +122,7 @@ static bool checkpar(int p,int q){
 	if(leftpar==0)
 		return true;
 	else{
+		panic("%d,%dbrackets unmatched.\n",p,q);
 		eval_flag=false;
 		return false;
 	}
