@@ -16,7 +16,7 @@ extern const char *regsb[];
 /* We use the ``readline'' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
 	static char *line_read = NULL;
-
+    
 	if (line_read) {
 		free(line_read);
 		line_read = NULL;

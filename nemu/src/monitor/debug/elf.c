@@ -13,7 +13,7 @@ void load_elf_tables(int argc, char *argv[]) {
 	Assert(argc == 2, "run NEMU with format 'nemu [program]'");
 	exec_file = argv[1];
 
-	FILE *fp = fopen(exec_file, "rb");
+	FILE *fp = fopen(exec_file, "rb");//####OPEN the exec_file in binary format.
 	Assert(fp, "Can not open '%s'", exec_file);
 
 	uint8_t buf[4096];
